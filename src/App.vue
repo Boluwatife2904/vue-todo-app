@@ -28,20 +28,14 @@
         <div class="todos-container">
           <div class="main-content" v-if="goals.length > 0">
             <ul>
-              <li
-                class="todo-item"
+              <TodoItem
                 v-for="(goal, index) in filteredGoals"
                 :key="goal.name"
+                :name="goal.name"
                 :class="{ completed: goal.completed }"
-              >
-                <span class="main-todo">
-                  <span class="circle" @click="toggleGoal(goal)"></span>
-                  <span class="todo-name">{{ goal.name }}</span>
-                </span>
-                <span class="remove-todo" @click="deleteGoal(index)"
-                  ><img src="../src/assets/images/icon-cross.svg" alt=""
-                /></span>
-              </li>
+                @delete="deleteGoal(index)"
+                @toggle="toggleGoal(goal)"
+              />
             </ul>
             <div v-if="filteredGoals.length === 0">
               <p>You don't have any goal in this section</p>
@@ -86,7 +80,10 @@
 </template>
 
 <script>
+import TodoItem from "./components/TodoItem";
+
 export default {
+  components: { TodoItem },
   data() {
     return {
       goals: [
@@ -179,10 +176,4 @@ export default {
 };
 </script>
 
-<style>
-/* #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  text-align: center;
-  margin-top: 60px;
-} */
-</style>
+<style></style>
