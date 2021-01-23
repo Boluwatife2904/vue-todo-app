@@ -37,11 +37,11 @@ body {
   transition: all .2s;
 }
 
-.light-theme .rest-of-content {
+.rest-of-content.light-theme  {
   background-color: hsl(0, 0%, 98%);
 }
 
-.light-theme .rest-of-content::before {
+.rest-of-content.light-theme::before {
   background: url("../images/bg-desktop-light.jpg");
 }
 
@@ -232,7 +232,7 @@ body {
   margin-bottom: 0;
 }
 
-.light-theme .todos-container p {
+.rest-of-content.light-theme .todos-container p {
   color: hsl(235, 19%, 35%);
 }
 
