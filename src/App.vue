@@ -19,7 +19,7 @@
             type="text"
             name="goal"
             placeholder="Currently Typing"
-            v-model="newGoalValue"
+            v-model.trim="newGoalValue"
           />
         </div>
       </form>
