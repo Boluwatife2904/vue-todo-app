@@ -73,6 +73,10 @@
         <p v-else>You have not added any goals</p>
       </div>
     </div>
+    <div class="empty" :class="{ show: emptyInput }">
+      <img src="../src/assets/images/alert-triangle.svg" alt="Alert Triangle" />
+      You have not entered any value
+    </div>
   </section>
 </template>
 
@@ -83,6 +87,7 @@ export default {
   components: { TodoItem },
   data() {
     return {
+      emptyInput: false,
       goals: [
         {
           name: "Complete Online Javascript Course",
@@ -132,6 +137,11 @@ export default {
           completed: false
         });
         localStorage.setItem("goals", JSON.stringify(this.goals));
+      } else {
+        this.emptyInput = true;
+        setTimeout(() => {
+          this.emptyInput = false;
+        }, 2000);
       }
       this.newGoalValue = "";
     },
