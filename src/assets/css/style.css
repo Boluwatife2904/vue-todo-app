@@ -52,28 +52,6 @@ body {
   padding: 40px 20px;
 }
 
-.todo-content .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-}
-
-.todo-content .header h3 {
-  color: #fff;
-  font-size: 26px;
-  letter-spacing: 8px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.todo-content .header .theme-switcher {
-  background: none;
-  outline: none;
-  border: none;
-  cursor: pointer;
-}
-
 /* START HEADER TODO */
 .input-field {
   position: relative;
@@ -234,34 +212,6 @@ body {
 
 .rest-of-content.light-theme .todos-container p {
   color: hsl(235, 19%, 35%);
-}
-
-/* EMPTY INPUT ERROR */
-.empty {
-  display: flex;
-  align-items: center;
-  border-radius: 4px;
-  background: rgb(255, 145, 0);
-  position: absolute;
-  top: -100%;
-  right: 16px;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 600;
-  padding: 20px 30px;
-  z-index: 999;
-  transition: all 0.5s ease-in-out;
-}
-
-.empty.show {
-  top: 60px;
-}
-
-.empty img {
-  margin-right: 10px;
-  height: 20px;
-  width: 20px;
-  display: block;
 }
 
 /* MEDIA QUERIES */

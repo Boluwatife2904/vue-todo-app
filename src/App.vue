@@ -1,17 +1,7 @@
 <template>
   <section class="rest-of-content" :class="{ 'light-theme': lightMode }">
     <div class="todo-content">
-      <div class="header">
-        <h3>Todo</h3>
-        <button class="theme-switcher" @click="toggleTheme">
-          <span v-if="!lightMode"
-            ><img src="../src/assets/images/icon-sun.svg" alt="Light Mode"
-          /></span>
-          <span v-else
-            ><img src="../src/assets/images/icon-moon.svg" alt="Dark Mode"
-          /></span>
-        </button>
-      </div>
+      <TheHeader :lightMode="lightMode" @toggle-theme="toggleTheme" />
       <form @submit.prevent="addGoal">
         <div class="input-field">
           <span class="circle"></span>
@@ -73,18 +63,17 @@
         <p v-else>You have not added any goals</p>
       </div>
     </div>
-    <div class="empty" :class="{ show: emptyInput }">
-      <img src="../src/assets/images/alert-triangle.svg" alt="Alert Triangle" />
-      You have not entered any value
-    </div>
+    <EmptyInput :emptyInput="emptyInput" />
   </section>
 </template>
 
 <script>
 import TodoItem from "./components/TodoItem";
+import TheHeader from "./components/TheHeader";
+import EmptyInput from "./components/EmptyInput";
 
 export default {
-  components: { TodoItem },
+  components: { TodoItem, TheHeader, EmptyInput },
   data() {
     return {
       emptyInput: false,
