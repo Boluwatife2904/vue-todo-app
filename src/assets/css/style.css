@@ -19,7 +19,7 @@ body {
   background-color: hsl(235, 21%, 11%);
   min-height: 100vh;
   z-index: 1;
-  transition: all .2s;
+  transition: all .3s;
 }
 
 .rest-of-content::before {
@@ -34,7 +34,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   z-index: -1;
-  transition: all .2s;
+  transition: all .3s;
 }
 
 .rest-of-content.light-theme  {
@@ -43,6 +43,9 @@ body {
 
 .rest-of-content.light-theme::before {
   background: url("../images/bg-desktop-light.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .todo-content {
