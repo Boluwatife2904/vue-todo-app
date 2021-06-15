@@ -57,28 +57,13 @@
 </template>
 
 <script>
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import TodoItem from "./components/TodoItem";
 import TheHeader from "./components/TheHeader";
 import CreateTodo from "./components/CreateTodo.vue";
 
 export default {
   components: { TodoItem, TheHeader, CreateTodo },
-  computed: {
-    remainingGoals() {
-      return this.goals.filter((goal) => !goal.completed);
-    },
-    filteredGoals() {
-      if (this.selectedFilter === "All") {
-        return this.goals;
-      } else if (this.selectedFilter === "Active") {
-        return this.goals.filter((goal) => !goal.completed);
-      } else if (this.selectedFilter === "Completed") {
-        return this.goals.filter((goal) => goal.completed);
-      }
-      return this.goals;
-    },
-  },
   setup() {
     // Data properties used
     const emptyInput = ref(false);
@@ -88,33 +73,33 @@ export default {
     const goals = ref([
       {
         name: "Complete Online Javascript Course",
-        completed: false,
+        completed: false
       },
 
       {
         name: "Jog around the pack 3x",
-        completed: false,
+        completed: false
       },
 
       {
         name: "10 mins meditation",
-        completed: false,
+        completed: false
       },
 
       {
         name: "Read for 1 hour",
-        completed: false,
+        completed: false
       },
 
       {
         name: "Pick up groceries",
-        completed: false,
+        completed: false
       },
 
       {
         name: "Complete Todo App on Frontend Mentor",
-        completed: false,
-      },
+        completed: false
+      }
     ]);
     // Watching Changes to Light Mode
     watch(lightMode, (_, newValue) => {
@@ -127,7 +112,7 @@ export default {
     function addNewTodo(value) {
       goals.value.unshift({
         name: value,
-        completed: false,
+        completed: false
       });
       updateGoalsInLocalStorage();
     }
@@ -143,12 +128,26 @@ export default {
       lightMode.value = !lightMode.value;
     }
     function clearCompleted() {
-      goals.value = goals.value.filter((goal) => !goal.completed);
+      goals.value = goals.value.filter(goal => !goal.completed);
       updateGoalsInLocalStorage();
     }
     function updateGoalsInLocalStorage() {
       localStorage.setItem("goals", JSON.stringify(goals.value));
     }
+    // Computed Properties
+    const remainingGoals = computed(() => {
+      return goals.value.filter(goal => !goal.completed);
+    });
+    const filteredGoals = computed(() => {
+      if (selectedFilter.value === "All") {
+        return goals.value;
+      } else if (selectedFilter.value === "Active") {
+        return goals.value.filter(goal => !goal.completed);
+      } else if (selectedFilter.value === "Completed") {
+        return goals.value.filter(goal => goal.completed);
+      }
+      return goals.value;
+    });
     return {
       emptyInput,
       selectedFilter,
@@ -160,8 +159,10 @@ export default {
       toggleGoal,
       toggleTheme,
       clearCompleted,
+      remainingGoals,
+      filteredGoals
     };
-  },
+  }
 };
 </script>
 
