@@ -68,62 +68,58 @@
 </template>
 
 <script>
+import { ref, watch } from "vue";
 import TodoItem from "./components/TodoItem";
 import TheHeader from "./components/TheHeader";
 import EmptyInput from "./components/EmptyInput";
 
 export default {
   components: { TodoItem, TheHeader, EmptyInput },
-  data() {
-    return {
-      emptyInput: false,
-      goals: [
-        {
-          name: "Complete Online Javascript Course",
-          completed: false
-        },
-
-        {
-          name: "Jog around the pack 3x",
-          completed: false
-        },
-
-        {
-          name: "10 mins meditation",
-          completed: false
-        },
-
-        {
-          name: "Read for 1 hour",
-          completed: false
-        },
-
-        {
-          name: "Pick up groceries",
-          completed: false
-        },
-
-        {
-          name: "Complete Todo App on Frontend Mentor",
-          completed: false
-        }
-      ],
-      selectedFilter: "All",
-      newGoalValue: "",
-      lightMode: false
-    };
-  },
-  watch: {
-    lightMode() {
-      localStorage.setItem("lightMode", JSON.stringify(this.lightMode));
-    }
-  },
+  // data() {
+  //   return {
+  //     // emptyInput: false,
+  //     // goals: [
+  //     //   {
+  //     //     name: "Complete Online Javascript Course",
+  //     //     completed: false,
+  //     //   },
+  //     //   {
+  //     //     name: "Jog around the pack 3x",
+  //     //     completed: false,
+  //     //   },
+  //     //   {
+  //     //     name: "10 mins meditation",
+  //     //     completed: false,
+  //     //   },
+  //     //   {
+  //     //     name: "Read for 1 hour",
+  //     //     completed: false,
+  //     //   },
+  //     //   {
+  //     //     name: "Pick up groceries",
+  //     //     completed: false,
+  //     //   },
+  //     //   {
+  //     //     name: "Complete Todo App on Frontend Mentor",
+  //     //     completed: false,
+  //     //   },
+  //     // ]
+  //     // selectedFilter: "All",
+  //     // newGoalValue: "",
+  //     // lightMode: false
+  //   };
+  // },
+  // watch: {
+  //   lightMode() {
+  //     localStorage.setItem("lightMode", JSON.stringify(this.lightMode));
+  //   },
+  // },
   methods: {
     addGoal() {
       if (this.newGoalValue !== "") {
         this.goals.unshift({
           name: this.newGoalValue,
-          completed: false
+          completed: false,
         });
         localStorage.setItem("goals", JSON.stringify(this.goals));
       } else {
@@ -143,32 +139,74 @@ export default {
       localStorage.setItem("goals", JSON.stringify(this.goals));
     },
     clearCompleted() {
-      this.goals = this.goals.filter(goal => !goal.completed);
+      this.goals = this.goals.filter((goal) => !goal.completed);
       localStorage.setItem("goals", JSON.stringify(this.goals));
     },
     toggleTheme() {
       this.lightMode = !this.lightMode;
-    }
+    },
   },
   computed: {
     remainingGoals() {
-      return this.goals.filter(goal => !goal.completed);
+      return this.goals.filter((goal) => !goal.completed);
     },
     filteredGoals() {
       if (this.selectedFilter === "All") {
         return this.goals;
       } else if (this.selectedFilter === "Active") {
-        return this.goals.filter(goal => !goal.completed);
+        return this.goals.filter((goal) => !goal.completed);
       } else if (this.selectedFilter === "Completed") {
-        return this.goals.filter(goal => goal.completed);
+        return this.goals.filter((goal) => goal.completed);
       }
       return this.goals;
-    }
+    },
   },
   created() {
-    this.lightMode = JSON.parse(localStorage.getItem("lightMode"));
+    // this.lightMode = JSON.parse(localStorage.getItem("lightMode"));
     this.goals = JSON.parse(localStorage.getItem("goals")) || this.goals;
-  }
+  },
+  setup() {
+    const emptyInput = ref(false);
+    const selectedFilter = ref("All");
+    const newGoalValue = ref("");
+    const lightMode = ref(false);
+    const goals = ref([
+      {
+        name: "Complete Online Javascript Course",
+        completed: false,
+      },
+
+      {
+        name: "Jog around the pack 3x",
+        completed: false,
+      },
+
+      {
+        name: "10 mins meditation",
+        completed: false,
+      },
+
+      {
+        name: "Read for 1 hour",
+        completed: false,
+      },
+
+      {
+        name: "Pick up groceries",
+        completed: false,
+      },
+
+      {
+        name: "Complete Todo App on Frontend Mentor",
+        completed: false,
+      },
+    ]);
+    watch(lightMode, (_, newValue) => {
+      localStorage.setItem("lightMode", JSON.stringify(newValue));
+    });
+    lightMode.value = JSON.parse(localStorage.getItem("lightMode"));
+    return { emptyInput, selectedFilter, newGoalValue, lightMode, goals };
+  },
 };
 </script>
 
