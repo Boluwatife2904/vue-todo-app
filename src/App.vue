@@ -102,8 +102,8 @@ export default {
       }
     ]);
     // Watching Changes to Light Mode
-    watch(lightMode, (_, newValue) => {
-      localStorage.setItem("lightMode", JSON.stringify(newValue));
+    watch(lightMode, () => {
+      localStorage.setItem("lightMode", JSON.stringify(lightMode.value));
     });
     // Fetching Data from Local Storage
     lightMode.value = JSON.parse(localStorage.getItem("lightMode"));
