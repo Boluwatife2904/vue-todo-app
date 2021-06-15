@@ -2,7 +2,7 @@
   <section class="rest-of-content" :class="{ 'light-theme': lightMode }">
     <div class="todo-content">
       <TheHeader :lightMode="lightMode" @toggle-theme="toggleTheme" />
-      <form @submit.prevent="addGoal">
+      <form @submit.prevent="addNewGoal">
         <div class="input-field">
           <span class="circle"></span>
           <input
@@ -75,77 +75,6 @@ import EmptyInput from "./components/EmptyInput";
 
 export default {
   components: { TodoItem, TheHeader, EmptyInput },
-  // data() {
-  //   return {
-  //     // emptyInput: false,
-  //     // goals: [
-  //     //   {
-  //     //     name: "Complete Online Javascript Course",
-  //     //     completed: false,
-  //     //   },
-  //     //   {
-  //     //     name: "Jog around the pack 3x",
-  //     //     completed: false,
-  //     //   },
-  //     //   {
-  //     //     name: "10 mins meditation",
-  //     //     completed: false,
-  //     //   },
-  //     //   {
-  //     //     name: "Read for 1 hour",
-  //     //     completed: false,
-  //     //   },
-  //     //   {
-  //     //     name: "Pick up groceries",
-  //     //     completed: false,
-  //     //   },
-  //     //   {
-  //     //     name: "Complete Todo App on Frontend Mentor",
-  //     //     completed: false,
-  //     //   },
-  //     // ]
-  //     // selectedFilter: "All",
-  //     // newGoalValue: "",
-  //     // lightMode: false
-  //   };
-  // },
-  // watch: {
-  //   lightMode() {
-  //     localStorage.setItem("lightMode", JSON.stringify(this.lightMode));
-  //   },
-  // },
-  methods: {
-    addGoal() {
-      if (this.newGoalValue !== "") {
-        this.goals.unshift({
-          name: this.newGoalValue,
-          completed: false,
-        });
-        localStorage.setItem("goals", JSON.stringify(this.goals));
-      } else {
-        this.emptyInput = true;
-        setTimeout(() => {
-          this.emptyInput = false;
-        }, 2000);
-      }
-      this.newGoalValue = "";
-    },
-    deleteGoal(index) {
-      this.goals.splice(index, 1);
-      localStorage.setItem("goals", JSON.stringify(this.goals));
-    },
-    toggleGoal(goal) {
-      goal.completed = !goal.completed;
-      localStorage.setItem("goals", JSON.stringify(this.goals));
-    },
-    clearCompleted() {
-      this.goals = this.goals.filter((goal) => !goal.completed);
-      localStorage.setItem("goals", JSON.stringify(this.goals));
-    },
-    toggleTheme() {
-      this.lightMode = !this.lightMode;
-    },
-  },
   computed: {
     remainingGoals() {
       return this.goals.filter((goal) => !goal.completed);
@@ -161,11 +90,8 @@ export default {
       return this.goals;
     },
   },
-  created() {
-    // this.lightMode = JSON.parse(localStorage.getItem("lightMode"));
-    this.goals = JSON.parse(localStorage.getItem("goals")) || this.goals;
-  },
   setup() {
+    // Data properties used
     const emptyInput = ref(false);
     const selectedFilter = ref("All");
     const newGoalValue = ref("");
@@ -201,12 +127,60 @@ export default {
         completed: false,
       },
     ]);
+    // Watching Changes to Light Mode
     watch(lightMode, (_, newValue) => {
       localStorage.setItem("lightMode", JSON.stringify(newValue));
     });
+    // Fetching Data from Local Storage
     lightMode.value = JSON.parse(localStorage.getItem("lightMode"));
-    return { emptyInput, selectedFilter, newGoalValue, lightMode, goals };
-  },
+    goals.value = JSON.parse(localStorage.getItem("goals")) || goals.value;
+    // All Functions used
+    function addNewGoal() {
+      if (newGoalValue.value !== "") {
+        goals.value.unshift({
+          name: newGoalValue.value,
+          completed: false
+        });
+        updateGoalsInLocalStorage();
+      } else {
+        emptyInput.value = true;
+        setTimeout(() => {
+          emptyInput.value = false;
+        }, 2000);
+      }
+      this.newGoalValue = "";
+    }
+    function deleteGoal(index) {
+      goals.value.splice(index, 1);
+      updateGoalsInLocalStorage();
+    }
+    function toggleGoal(goal) {
+      goal.completed = !goal.completed;
+      updateGoalsInLocalStorage();
+    }
+    function toggleTheme() {
+      lightMode.value = !lightMode.value;
+    }
+    function clearCompleted() {
+      goals.value = goals.value.filter(goal => !goal.completed);
+      updateGoalsInLocalStorage();
+    }
+    function updateGoalsInLocalStorage() {
+      localStorage.setItem("goals", JSON.stringify(goals.value));
+    }
+    return {
+      emptyInput,
+      selectedFilter,
+      newGoalValue,
+      lightMode,
+      goals,
+      addNewGoal,
+      deleteGoal,
+      toggleGoal,
+      toggleTheme,
+      clearCompleted
+    };
+  }
 };
 </script>
 
