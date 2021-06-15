@@ -2,17 +2,7 @@
   <section class="rest-of-content" :class="{ 'light-theme': lightMode }">
     <div class="todo-content">
       <TheHeader :lightMode="lightMode" @toggle-theme="toggleTheme" />
-      <form @submit.prevent="addNewGoal">
-        <div class="input-field">
-          <span class="circle"></span>
-          <input
-            type="text"
-            name="goal"
-            placeholder="Currently Typing"
-            v-model.trim="newGoalValue"
-          />
-        </div>
-      </form>
+      <CreateTodo @create-todo="addNewTodo" />
       <div class="todos-container">
         <div class="main-content" v-if="goals.length > 0">
           <ul>
@@ -63,7 +53,6 @@
         <p v-else>You have not added any goals</p>
       </div>
     </div>
-    <EmptyInput :emptyInput="emptyInput" />
   </section>
 </template>
 
@@ -71,10 +60,10 @@
 import { ref, watch } from "vue";
 import TodoItem from "./components/TodoItem";
 import TheHeader from "./components/TheHeader";
-import EmptyInput from "./components/EmptyInput";
+import CreateTodo from "./components/CreateTodo.vue";
 
 export default {
-  components: { TodoItem, TheHeader, EmptyInput },
+  components: { TodoItem, TheHeader, CreateTodo },
   computed: {
     remainingGoals() {
       return this.goals.filter((goal) => !goal.completed);
@@ -135,20 +124,12 @@ export default {
     lightMode.value = JSON.parse(localStorage.getItem("lightMode"));
     goals.value = JSON.parse(localStorage.getItem("goals")) || goals.value;
     // All Functions used
-    function addNewGoal() {
-      if (newGoalValue.value !== "") {
-        goals.value.unshift({
-          name: newGoalValue.value,
-          completed: false
-        });
-        updateGoalsInLocalStorage();
-      } else {
-        emptyInput.value = true;
-        setTimeout(() => {
-          emptyInput.value = false;
-        }, 2000);
-      }
-      this.newGoalValue = "";
+    function addNewTodo(value) {
+      goals.value.unshift({
+        name: value,
+        completed: false,
+      });
+      updateGoalsInLocalStorage();
     }
     function deleteGoal(index) {
       goals.value.splice(index, 1);
@@ -162,7 +143,7 @@ export default {
       lightMode.value = !lightMode.value;
     }
     function clearCompleted() {
-      goals.value = goals.value.filter(goal => !goal.completed);
+      goals.value = goals.value.filter((goal) => !goal.completed);
       updateGoalsInLocalStorage();
     }
     function updateGoalsInLocalStorage() {
@@ -174,13 +155,13 @@ export default {
       newGoalValue,
       lightMode,
       goals,
-      addNewGoal,
+      addNewTodo,
       deleteGoal,
       toggleGoal,
       toggleTheme,
-      clearCompleted
+      clearCompleted,
     };
-  }
+  },
 };
 </script>
 
